@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Observer</title>
+</head>
+<body>
+  <h1>WebSocket Observer</h1>
+
+  <ul id="randomNumbers"></ul>
+
+  <button onclick="acceptRandomNumber()">Accept Random Number</button>
+  <button onclick="rejectRandomNumber()">Reject Random Number</button>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:3001');
+    const randomNumbersList = document.getElementById('randomNumbers');
+
+    socket.onmessage = (event) => {
+      const randomNum = event.data;
+
+      const li = document.createElement('li');
+      li.appendChild(document.createTextNode(randomNum));
+
+      // Display the random number and buttons
+      randomNumbersList.innerHTML = '';
+      randomNumbersList.appendChild(li);
+      randomNumbersList.appendChild(createButton('Accept', acceptRandomNumber));
+      randomNumbersList.appendChild(createButton('Reject', rejectRandomNumber));
+    };
+
+    function createButton(label, handler) {
+      const button = document.createElement('button');
+      button.textContent = label;
+      button.onclick = handler;
+      return button;
+    }
+
+    function acceptRandomNumber() {
+      alert('Random number accepted!');
+    }
+
+    function rejectRandomNumber() {
+      alert('Random number rejected!');
+    }
+  </script>
+</body>
+</html>

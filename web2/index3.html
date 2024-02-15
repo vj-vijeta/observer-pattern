@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Observer</title>
+</head>
+<body>
+  <h1>WebSocket Observer</h1>
+
+  <ul id="randomNumbers"></ul>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:3001');
+    const randomNumbersList = document.getElementById('randomNumbers');
+
+    class ClientObserver {
+      update(randomNum) {
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode(randomNum));
+        randomNumbersList.innerHTML = '';
+        randomNumbersList.appendChild(li);
+      }
+    }
+
+    const clientObserver = new ClientObserver();
+
+    socket.onmessage = (event) => {
+      const randomNum = event.data;
+      clientObserver.update(randomNum);
+    };
+  </script>
+</body>
+</html>
